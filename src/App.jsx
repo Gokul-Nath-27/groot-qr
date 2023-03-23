@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import qr from "./assets/qr.svg";
 import "./App.css";
 import supabase from "./supabase";
+import QRCode from "react-qr-code";
 
 function App() {
   const [Data, setData] = useState([]);
-  const [Realtime, setRealtime] = useState([]);
 
   supabase
     .channel("any")
@@ -14,7 +15,6 @@ function App() {
       (payload) => {
         console.log("Change received!", payload);
         handleData();
-        // setRealtime(payload);
       }
     )
     .subscribe();
@@ -32,9 +32,9 @@ function App() {
     handleData();
   }, []);
   return (
-    <div className="App">
-      <div>Hello</div>
-      {Data[0]?.verified ? "true" : "false"}
+    <div className={`App ${Data[0]?.verified}`}>
+      <QRCode value="https://tourmaline-chebakia-60518f.netlify.app/" />
+      {/* <img src={qr} style={{ height: "500px" }} /> */}
     </div>
   );
 }
